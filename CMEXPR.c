@@ -36,7 +36,7 @@ int main()
    scanf("%d",&t);
    while(t--){
    char s[1000];
-   char postfix[1000];
+   char postfix[1000],infix[1000];
    char next;
    scanf("%s",s);
 int l = strlen(s),i,x,c=0;
@@ -66,7 +66,32 @@ int l = strlen(s),i,x,c=0;
    while(st.top!=-1)
 		postfix[c++]=pop(&st);
 	postfix[c]='\0';
-	printf("%s",postfix);
+	int l2 = strlen(postfix);
+	for(i=0;i<l2;i++)
+    {
+        if(a[i]>='a'&&a[i]<='z')
+            push(&st,a[i]);
+        else
+        {
+            if(st.top<1)
+                printf("error");
+            else
+            {
+                op1=pop(&st);
+                op2=pop(&st);
+                char temp[100];
+                temp[0]='(';
+                temp[1]=op1;
+                temp[2]=a[i];
+                temp[3]=op2;
+                temp[4]=')';
+                temp[5]='\0';
+                for(i=0;i<6;i+-)
+            }
+        }
+
+    }
+	printf("%s",infix);
    }
    return 0;
 }

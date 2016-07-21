@@ -1,91 +1,89 @@
 #include<stdio.h>
+#include<iostream>
+#include<vector>
+#include<string>
 #include<stdlib.h>
 #define MAX 100001
 #define initial 0
 #define waiting 2
 #define visited 3
+using namespace std;
 struct node{
      int cordX;
      int cordY;
 };
-void EnQ(struct node Q[], int x, int y, int * front,  int * rear)
+void EnQ(struct node Q[], int x, int y, int * frontp,  int * rear)
 {
-    if(*front==-1)
-        *front = *front + 1;
+    if(*frontp==-1)
+        *frontp = *frontp + 1;
 //    if(*rear>=MAX-1)
   //      return;
     *rear = *rear + 1;
     Q[*rear].cordX = x;
     Q[*rear].cordY = y;
-  // printf("\nEnqued %d %d\n",Q[*rear].cordX,Q[*rear].cordY);
+   printf("\nEnqued %d %d\n",Q[*rear].cordX,Q[*rear].cordY);
     return;
 
 }
-struct node DeQ(struct node Q[] , int * front,  int * rear)
+struct node DeQ(struct node Q[], int * frontp,  int * rear)
 {
-    //if(*front==-1||*front>*rear)
+    //if(*frontp==-1||*frontp>*rear)
     //    return ;
-    struct node z = Q[*front];
-    *front = * front + 1;
-  //  printf("\Dequed\n");
+    struct node z = Q[*frontp];
+    *frontp = * frontp + 1;
+    printf("\Dequed\n");
     return z;
 }
+string s;
 
+        int maze[1001][1001];
+         int status[1001][1001];
+         int distancep[1001][1001];
+        struct node Q[1000000];
+        //char s[1000000009];
 
-        struct node Q[10000000];
-        int distance[1002][1002];
-        int maze[1002][1002];
-        int status[1002][1002;
 int main()
 {
-    int n,i,j;
+    int n;
+  /*  vector<vector<int>> maze;
+     vector<vector<int>> status;
+     vector<vector<int>>distancep;
+     vector<struct node> Q;
+     Q.resize(1001) ;
+     maze.resize(1001,vector <int>(1001,0));
+     status.resize(1001,vector <int>(1001,0));
+     distancep.resize(1001,vector <int>(1001,0));*/
 
+
+  /*   int maze[101][101]={0};
+     int status[101][101]={0};
+     int distancep[101][101]={0};
+     */
 
 
     scanf("%d",&n);
     while(n--)
     {
          int M,N,xi,yi,i,j,xf,yf;
-         int front = -1, rear = -1;
+         int frontp = -1, rear = -1;
         char c;
+        string s;
 
-    char *s=(char*)malloc(sizeof(char)*10000);
-
-
-
+	//printf("0000");
         scanf("%d %d",&M,&N);
-        M++;N++;
 
-   /* int **distance = (int**)malloc(sizeof(int*)*M);
-    for(i=0;i<=M;i++)
-        distance[i]=(int*)malloc(sizeof(int)*N);
-    int **status = (int**)malloc(sizeof(int*)*M);
-    for(i=0;i<=M;i++)
-        status[i]=(int*)malloc(sizeof(int)*N);
-    int **maze = (int**)malloc(sizeof(int*)*M);
-    for(i=0;i<=M;i++)
-        maze[i]=(int*)malloc(sizeof(int)*N);*/
 
-         for(i=0;i<=M;i++)
-    {
-        for(j=0;j<=N;j++)
-        {
-            distance[i][j]=0;
-            status[i][j]=0;
-            maze[i][j]=-1;
-        }
-    }
-
-M--;N--;
 
         for(i=1;i<=M;i++)
         {
 
-            scanf("%s",s);
-            for(j=1;j<=N;j++)
+
+
+            cin>>s;
+             for(j=1;j<=N;j++)
             {
                 c=s[j-1];
-
+                //c==getchar();
                 if(c=='S')
                 {
                     maze[j][i] = 1;
@@ -111,47 +109,50 @@ M--;N--;
 
             }
         }
-        free(s);
-
+        //printf("0000");
         if(xi==xf&&yi==yf)
             printf("0\n");
         else
         {
-    EnQ(Q,xi,yi,&front,&rear);
+    EnQ(Q,xi,yi,&frontp,&rear);
     status[xi][yi]=waiting;
-    distance[xi][yi]=0;
+    distancep[xi][yi]=0;
      int xtemp,ytemp,x,y;
     struct node z;
-      i = 1;
+     int i = 1;
 
-    while(front<=rear)
+    while(frontp<=rear)
     {
-        z = DeQ(Q,&front,&rear);
+        z = DeQ(Q,&frontp,&rear);
         x = z.cordX;
         y = z.cordY;
         status[x][y] = visited;
+        xtemp =x;
+        ytemp=y;
 
          do
         {
 
+//         printf("\n%d\n",maze[xtemp][ytemp]);
+
+
         if(xtemp>=1&&ytemp>=1&&xtemp<=N&&ytemp<=M&&maze[xtemp][ytemp]==1&&status[xtemp][ytemp]==initial)
         {
 
-            EnQ(Q,xtemp,ytemp,&front,&rear);
+            EnQ(Q,xtemp,ytemp,&frontp,&rear);
             status[xtemp][ytemp]  = waiting;
-            distance[xtemp][ytemp] = distance[x][y] + 1;
+            distancep[xtemp][ytemp] = distancep[x][y] + 1;
         }
-
-
-        xtemp = x + i;
+xtemp = x + i;
         ytemp = y;
         i++;
-//         printf("\n%d\n",maze[xtemp][ytemp]);
-
-        if(xtemp<=N&&ytemp<=M&&maze[xtemp][ytemp]==-1)
+        if(maze[xtemp][ytemp]==-1)
             break;
-        }while(xtemp<=N&&ytemp<=M&&i<=N*M);
 
+
+
+
+        }while(xtemp<=N&&ytemp<=M&&i<=N*M);
         i = 1;
          do
         {
@@ -159,31 +160,31 @@ M--;N--;
 
         if(xtemp>=1&&ytemp>=1&&xtemp<=N&&ytemp<=M&&maze[xtemp][ytemp]==1&&status[xtemp][ytemp]==initial)
         {
-            EnQ(Q,xtemp,ytemp,&front,&rear);
+            EnQ(Q,xtemp,ytemp,&frontp,&rear);
             status[xtemp][ytemp]  = waiting;
-            distance[xtemp][ytemp] = distance[x][y] + 1;
+            distancep[xtemp][ytemp] = distancep[x][y] + 1;
         }
          xtemp = x - i;
         ytemp = y;
         i++;
-        if(xtemp<=N&&ytemp<=M&&maze[xtemp][ytemp]==-1)
+        if(maze[xtemp][ytemp]==-1)
             break;
         }while(xtemp<=N&&ytemp<=M&&i<=N*M);
-        i = 1;//printf("\nE reached \n");
+        i = 1;
 
          do
         {
 
         if(xtemp>=1&&ytemp>=1&&xtemp<=N&&ytemp<=M&&maze[xtemp][ytemp]==1&&status[xtemp][ytemp]==initial)
         {
-            EnQ(Q,xtemp,ytemp,&front,&rear);
+            EnQ(Q,xtemp,ytemp,&frontp,&rear);
             status[xtemp][ytemp]  = waiting;
-            distance[xtemp][ytemp] = distance[x][y] + 1;
+            distancep[xtemp][ytemp] = distancep[x][y] + 1;
         }
         xtemp = x;
         ytemp = y+i;
         i++;
-        if(xtemp<=N&&ytemp<=M&&maze[xtemp][ytemp]==-1)
+        if(maze[xtemp][ytemp]==-1)
             break;
         }while(xtemp<=N&&ytemp<=M&&i<=N*M);
         i = 1;
@@ -192,14 +193,14 @@ M--;N--;
 
         if(xtemp>=1&&ytemp>=1&&xtemp<=N&&ytemp<=M&&maze[xtemp][ytemp]==1&&status[xtemp][ytemp]==initial)
         {
-            EnQ(Q,xtemp,ytemp,&front,&rear);
+            EnQ(Q,xtemp,ytemp,&frontp,&rear);
             status[xtemp][ytemp]  = waiting;
-            distance[xtemp][ytemp] = distance[x][y] + 1;
+            distancep[xtemp][ytemp] = distancep[x][y] + 1;
         }
          xtemp = x;
         ytemp = y-i;
         i++;
-        if(xtemp<=N&&ytemp<=M&&maze[xtemp][ytemp]==-1)
+        if(maze[xtemp][ytemp]==-1)
             break;
         }while(xtemp<=N&&ytemp<=M&&i<=N*M);
         i = 1;
@@ -208,14 +209,14 @@ M--;N--;
 
         if(xtemp>=1&&ytemp>=1&&xtemp<=N&&ytemp<=M&&maze[xtemp][ytemp]==1&&status[xtemp][ytemp]==initial)
         {
-            EnQ(Q,xtemp,ytemp,&front,&rear);
+            EnQ(Q,xtemp,ytemp,&frontp,&rear);
             status[xtemp][ytemp]  = waiting;
-            distance[xtemp][ytemp] = distance[x][y] + 1;
+            distancep[xtemp][ytemp] = distancep[x][y] + 1;
         }
         xtemp = x + i;
         ytemp = y + i;
         i++;
-        if(xtemp<=N&&ytemp<=M&&maze[xtemp][ytemp]==-1)
+        if(maze[xtemp][ytemp]==-1)
             break;
         }while(xtemp<=N&&ytemp<=M&&i<=N*M);
         i = 1;
@@ -224,14 +225,14 @@ M--;N--;
 
         if(xtemp>=1&&ytemp>=1&&xtemp<=N&&ytemp<=M&&maze[xtemp][ytemp]==1&&status[xtemp][ytemp]==initial)
         {
-            EnQ(Q,xtemp,ytemp,&front,&rear);
+            EnQ(Q,xtemp,ytemp,&frontp,&rear);
             status[xtemp][ytemp]  = waiting;
-            distance[xtemp][ytemp] = distance[x][y] + 1;
+            distancep[xtemp][ytemp] = distancep[x][y] + 1;
         }
          xtemp = x + i;
         ytemp = y - i;
         i++;
-        if(xtemp<=N&&ytemp<=M&&maze[xtemp][ytemp]==-1)
+        if(maze[xtemp][ytemp]==-1)
             break;
         }while(xtemp<=N&&ytemp<=M&&i<=N*M);
         i = 1;
@@ -240,14 +241,14 @@ M--;N--;
 
         if(xtemp>=1&&ytemp>=1&&xtemp<=N&&ytemp<=M&&maze[xtemp][ytemp]==1&&status[xtemp][ytemp]==initial)
         {
-            EnQ(Q,xtemp,ytemp,&front,&rear);
+            EnQ(Q,xtemp,ytemp,&frontp,&rear);
             status[xtemp][ytemp]  = waiting;
-            distance[xtemp][ytemp] = distance[x][y] + 1;
+            distancep[xtemp][ytemp] = distancep[x][y] + 1;
         }
          xtemp = x - i;
         ytemp = y + i;
         i++;
-        if(xtemp<=N&&ytemp<=M&&maze[xtemp][ytemp]==-1)
+        if(maze[xtemp][ytemp]==-1)
             break;
         }while(xtemp<=N&&ytemp<=M&&i<=N*M);
         i = 1;
@@ -256,14 +257,14 @@ M--;N--;
 
         if(xtemp>=1&&ytemp>=1&&xtemp<=N&&ytemp<=M&&maze[xtemp][ytemp]==1&&status[xtemp][ytemp]==initial)
         {
-            EnQ(Q,xtemp,ytemp,&front,&rear);
+            EnQ(Q,xtemp,ytemp,&frontp,&rear);
             status[xtemp][ytemp]  = waiting;
-            distance[xtemp][ytemp] = distance[x][y] + 1;
+            distancep[xtemp][ytemp] = distancep[x][y] + 1;
         }
         xtemp = x - i;
         ytemp = y - i;
         i++;
-        if(xtemp<=N&&ytemp<=M&&maze[xtemp][ytemp]==-1)
+        if(maze[xtemp][ytemp]==-1)
             break;
         }while(xtemp<=N&&ytemp<=M&&i<=N*M);
         i = 1;
@@ -273,14 +274,10 @@ M--;N--;
     if(status[xf][yf]!=visited)
     printf("-1\n");
     else
-    printf("%d\n",distance[xf][yf]);
+    printf("%d\n",distancep[xf][yf]);
 
-    free(maze);
-    free(distance);
-    free(status);
   //  printf("%s",s);
 
         }
-
     }
 }
